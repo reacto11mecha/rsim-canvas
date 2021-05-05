@@ -12,12 +12,19 @@ const GameStage = new Stage({
 const rocket = new Rocket(GameStage);
 GameStage.add(rocket);
 
-const anim = new Animation((frame) => {
-  const time = frame.time;
-  const timeDiff = frame.timeDiff;
-  const frameRate = frame.frameRate;
+document.addEventListener("keydown", handleKeyInput);
+document.addEventListener("keyup", handleKeyInput);
 
-  console.log(frameRate);
+function handleKeyInput({ keyCode, type }) {
+  const isKeyDown = type === "keydown" ? true : false;
+
+  if (keyCode === 37) rocket.rotatingLeft = isKeyDown;
+  if (keyCode === 39) rocket.rotatingRight = isKeyDown;
+  if (keyCode === 38) rocket.engineOn = isKeyDown;
+}
+
+const anim = new Animation(() => {
+  rocket.move();
+  rocket.drawRocket();
 }, GameStage);
-
 anim.start();
